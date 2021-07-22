@@ -1,0 +1,177 @@
+from IPython.display import clear_output
+
+
+def display_board(board):
+    
+    print('\n'*100)
+    
+    print(f'  {board[7]} | {board[8]} | {board[9]}')
+    print(' ----------- ')
+    print(f'  {board[4]} | {board[5]} | {board[6]}') 
+    print(' ----------- ')
+    print(f'  {board[1]} | {board[2]} | {board[3]}')
+
+
+def player_input():
+    
+    provided_input = "wrong"
+    
+    while provided_input not in ['x','o']:
+        provided_input = input('please pick x or o ')
+        
+        if provided_input not in ['x','o']:
+            print('that symbol is not accepted. ')
+        
+    return provided_input 
+
+
+def place_marker(board, marker, position):
+    
+    board[int(position)] = marker
+    return board
+    print(display_board(board))
+
+
+def win_check(board):
+    
+    check = False
+    
+    if board[1] == board[2] == board[3]:
+        check = True
+        print(f'Congratulations, {board[1]} is the winner!')
+    elif board[4] == board[5] == board[6]:
+        check = True
+        print(f'Congratulations, {board[4]} is the winner!')
+    elif board[7] == board[8] == board[9]:
+        check = True
+        print(f'Congratulations, {board[7]} is the winner!')
+    elif board[1] == board[4] == board[7]:
+        check = True
+        print(f'Congratulations, {board[1]} is the winner!')
+    elif board[2] == board[5] == board[8]:
+        check = True
+        print(f'Congratulations, {board[2]} is the winner!')
+    elif board[3] == board[6] == board[9]:
+        check = True
+        print(f'Congratulations, {board[3]} is the winner!')
+    elif board[1] == board[5] == board[9]:
+        check = True
+        print(f'Congratulations, {board[1]} is the winner!')
+    elif board[3] == board[5] == board[7]:
+        check = True
+        print(f'Congratulations, {board[3]} is the winner!')
+        
+    return check   
+
+
+def space_check(board, position):
+    
+    if board[position] in range(1,10):
+        return True
+        
+
+def full_board_check(board):
+    
+    x = [0]
+
+    for unit in board:
+        if unit in ['1','2','3','4','5','6','7','8','9']:
+            x.append(unit)
+        else:
+            pass
+    if x == [0]:
+        return True
+    else:
+        return False
+        
+        
+player = ['player1', 'player2']
+
+
+def player_choice(player):
+    
+    player_position = input(f'{player} Please make your next move ')
+    
+    while player_position not in ['1','2','3','4','5','6','7','8','9']:
+        
+        player_position = input(f'{player} Please make your next move ')
+        print ('please pick a valid number')
+        
+    return player_position
+    
+    
+def replay():
+    answer = "wrong"
+    
+    while answer not in ['y','n']:
+        answer = input('Do you want to play tic_tac_toe ? y or n ')
+        
+        if answer not in ['y','n']:
+            print('I need to know, "y" or "n" ')
+        
+        
+    if answer == 'y':
+        return True
+    else:
+        return False
+        
+        
+def tic_tac_toe():
+    
+    print('Are you ready to play tic_tac_toe? ')
+    
+    # General
+    board = ['0','1','2','3','4','5','6','7','8','9']
+    game_on = True
+    
+    # player assignment
+    player1_unit = player_input()
+        
+    if player1_unit == 'x':
+        player2_unit = 'o'
+    else:
+        player2_unit = 'x'
+    
+    
+    # game
+    while game_on == True:
+        
+        # player turns
+        player1 = True 
+        
+        clear_output()   
+        display_board(board)
+        
+        while player1 == True:   
+            
+            place_marker(board, player1_unit.upper(), player_choice(player[0]))
+            
+            clear_output()
+            display_board(board)
+            win_check(board)
+            full_board_check(board)
+            
+            if win_check(board) == True or full_board_check(board) == True: 
+                game_on = False
+            else:
+                game_on = True
+                player1 = False
+            break
+            
+        while player1 == False:
+            
+            place_marker(board, player2_unit.upper(), player_choice(player[1]))
+            
+            win_check(board)
+            full_board_check(board)
+            if win_check(board) == True or full_board_check(board) == True: 
+                game_on = False
+            else:
+                game_on = True
+            player1 = True
+            break
+        
+        
+    if win_check(board) == True or full_board_check(board) == True: 
+        game_on = False
+    
